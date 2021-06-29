@@ -1,4 +1,4 @@
-import os, json
+import os, json, logging
 from random import choice
 from requests import Session
 
@@ -9,6 +9,12 @@ from dotenv import load_dotenv
 from itertools import cycle
 
 from coinmarketcap import new_dict
+
+logger = logging.getLogger('discord')
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
 
 bot = commands.Bot(command_prefix='!')
 status = cycle(['Boulie Manitas', "Type '!help' for help", 'Valorant', '', 'Boulie Baptiste', 'soloQ ARAM', '1vs1 Yasuo-Diana'])
@@ -84,12 +90,20 @@ async def unmute(ctx, member: discord.Member):
 
 @bot.command()
 async def info_chan(ctx):
-    await ctx.send("`id de Salon: 757990916530372840 \n id de BTREE: 757990916530372841 \n id de Goulag: 760054336604209153 \n id de Ban: 813345671016611891`")
+    embed = discord.Embed(title="ID of Voice channels", description="This embed show the different id of each voice channels.", color=discord.Color.random())
+    embed.set_author(name=ctx.author.display_name, url="https://github.com/cbanier", icon_url="https://avatars.githubusercontent.com/u/60900707?v=4")
+    embed.set_thumbnail(url='https://image.flaticon.com/icons/png/512/1599/1599465.png')
+    embed.add_field(name='Salon', value='`757990916530372840`', inline=True)
+    embed.add_field(name='BTREE', value='`757990916530372841`', inline=True)
+    embed.add_field(name='\u200B', value='\u200B', inline=False)
+    embed.add_field(name='Goulag', value='`760054336604209153`', inline=True)
+    embed.add_field(name='Ban', value='`813345671016611891`', inline=True)
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def price(ctx, coin):
     d = new_dict(str(coin))
-    embed = discord.Embed(title=coin, url='https://coinmarketcap.com/', description="This is an embed that will show a cryptocurrency's price changes.", color=discord.Color.gold())
+    embed = discord.Embed(title=coin, url='https://coinmarketcap.com/', description="This embed show a cryptocurrency price changes.", color=discord.Color.gold())
     embed.set_author(name=ctx.author.display_name, url="https://github.com/cbanier", icon_url="https://avatars.githubusercontent.com/u/60900707?v=4")
     embed.set_thumbnail(url='https://cryptonaute.fr/wp-content/uploads/2021/03/CRYPTOMONNAIES-.jpg')
     embed.add_field(name="Price of 1 " + coin, value=d['price'] + ' $')

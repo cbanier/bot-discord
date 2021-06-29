@@ -6,7 +6,7 @@ url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
 headers = {
     'Accepts':'application/json',
-    'X-CMC_PRO_API_KEY':'your-coinmarkcap-key'
+    'X-CMC_PRO_API_KEY':'50663521-4321-4a44-8283-8b080bf15737'
 }
 
 session = Session()
